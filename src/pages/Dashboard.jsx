@@ -41,12 +41,22 @@ const Dashboard = () => {
 
  const [remindingAll, setRemindingAll] = useState(false);
 
+  const openWhatsApp = (url) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.rel = "noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
 const handleSendReminder = async (member) => {
   setSendingReminder(member.id);
   try {
     const res = await api.post(`/members/${member.id}/remind`);
     if (res.data.whatsappUrl) {
-      window.open(res.data.whatsappUrl, "_blank");
+      openWhatsApp(res.data.whatsappUrl);
       toast.success(`WhatsApp opened for ${member.name}`);
     } else {
       toast.success(`Email reminder sent to ${member.name}`);
@@ -66,7 +76,7 @@ const handleRemindAll = async () => {
       // Open each WhatsApp link with a small delay
       res.data.whatsappLinks.forEach((link, index) => {
         setTimeout(() => {
-          window.open(link.url, "_blank");
+          openWhatsApp(link.url);
         }, index * 1500);
       });
       toast.success(`Opening WhatsApp for ${res.data.whatsappLinks.length} members`);
