@@ -19,8 +19,8 @@ const Verify = () => {
 
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/auth/verify?token=${token}`
-        );
+        `${import.meta.env.VITE_API_URL}/api/auth/verify?token=${token}`
+      );
         login(res.data.token, res.data.gym);
         setStatus("success");
         setTimeout(() => navigate("/"), 2000);
