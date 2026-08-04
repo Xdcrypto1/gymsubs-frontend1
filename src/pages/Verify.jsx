@@ -18,9 +18,10 @@ const Verify = () => {
       }
 
       try {
-        const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/auth/verify?token=${token}`
-      );
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/auth/verify`,
+          { token }
+        );
         login(res.data.token, res.data.gym);
         setStatus("success");
         setTimeout(() => navigate("/"), 2000);
